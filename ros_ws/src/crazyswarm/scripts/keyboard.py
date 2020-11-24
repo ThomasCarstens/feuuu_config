@@ -32,6 +32,10 @@ class KeyboardDrone:
 
 #cf.cmdVelocityWorld(np.array([self.velocity, 0, 0]), yawRate=0)
     def on_press(self, key):
+
+        if key.char == 'm': #fix_position
+            self.cf.goTo(self.cf.position(), yaw=0, duration=0.5)
+
         if key.char == 'w': #start_forward
             self.cf.cmdVelocityWorld(np.array([self.velocity, 0, 0]), yawRate=0)
         if key.char == 'u': #take_off
@@ -48,14 +52,16 @@ class KeyboardDrone:
             self.cf.cmdVelocityWorld(np.array([0, 0, self.velocity]), yawRate=0)
 
         if key.char == 'l':
-            print('Kill engines')
-	    cf.cmdStop()
-            return False
+            #print('Kill engines')
+	    #cf.cmdStop()
+            self.cf.land(0.05, duration=1.0)
 
-        if key.char == 'q':
-            self.mc.start_turn_left(self.ang_velocity)
-        if key.char == 'e':
-            self.mc.start_turn_right(self.ang_velocity)
+            #return False
+
+        #if key.char == 'q':
+        #    self.cf.start_turn_left(self.ang_velocity)
+        #if key.char == 'e':
+        #    self.cf.start_turn_right(self.ang_velocity)
 
     def on_release (self, key):
         self.cf.cmdVelocityWorld(np.array([0, 0, 0]), yawRate=0)
