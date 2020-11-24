@@ -41,7 +41,7 @@ class GestureDrone:
         print ('LEFT to move left!')
         print ('FIST emergency STOP')
         print('THUMBUP to go on follow mode')
-        self.cf.takeoff(targetHeight=self.takeoff_height, duration=3.0)
+        #self.cf.takeoff(targetHeight=self.takeoff_height, duration=3.0)
         
         self.listener()
 
@@ -66,23 +66,23 @@ class GestureDrone:
 
             # if msg.data == 'TWO': #start_forward
             #     self.cf.cmdVelocityWorld(np.array([self.velocity, 0, 0]), yawRate=0)
-            if msg.data == 'SPIDERMAN' :#start_up
+            if msg.data == 'INDEX' :#start_up
                 self.cf.takeoff(targetHeight=self.takeoff_height, duration=3.0)
             
-            if msg.data == 'THUMBDOWN' :#start_up
+            if msg.data == 'SPIDERMAN' :#land
                 self.cf.land(0.05, duration=1.0)
 
-            if msg.data == 'UP' :#start_up
-                self.cf.cmdVelocityWorld(np.array([0, 0, self.velocity]), yawRate=0)
+            # if msg.data == 'UP' :#start_up
+            #     self.cf.cmdVelocityWorld(np.array([0, 0, self.velocity]), yawRate=0)
 
-            if msg.data == 'DOWN': #start_down
-                self.cf.cmdVelocityWorld(np.array([0, 0, -self.velocity]), yawRate=0)
+            # if msg.data == 'DOWN': #start_down
+            #     self.cf.cmdVelocityWorld(np.array([0, 0, -self.velocity]), yawRate=0)
 
-            if msg.data == 'RIGHT': #start_right
-                 self.cf.cmdVelocityWorld(np.array([0, -self.velocity, 0]), yawRate=0)
+            # if msg.data == 'RIGHT': #start_right
+            #      self.cf.cmdVelocityWorld(np.array([0, -self.velocity, 0]), yawRate=0)
 
-            if msg.data == 'LEFT': #start_right
-                 self.cf.cmdVelocityWorld(np.array([0, self.velocity, 0]), yawRate=0)
+            # if msg.data == 'LEFT': #start_right
+            #      self.cf.cmdVelocityWorld(np.array([0, self.velocity, 0]), yawRate=0)
 
             # if signal == 'c': #start_down
             #     self.cf.cmdVelocityWorld(np.array([0, 0, -self.velocity]), yawRate=0)
