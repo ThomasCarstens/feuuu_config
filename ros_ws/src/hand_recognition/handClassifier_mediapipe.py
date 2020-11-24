@@ -4,48 +4,7 @@ mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 import rospy
 from std_msgs.msg import String
-# # For static images:
-# hands = mp_hands.Hands(
-#     static_image_mode=True,
-#     max_num_hands=2,
-#     min_detection_confidence=0.7)
-# for idx, file in enumerate(file_list):
-#   # Read an image, flip it around y-axis for correct handedness output (see
-#   # above).
-#   image = cv2.flip(cv2.imread(file), 1)
-#   # Convert the BGR image to RGB before processing.
-#   results = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
-#   # Print handedness and draw hand landmarks on the image.
-#   print('handedness:', results.multi_handedness)
-#   if not results.multi_hand_landmarks:
-#     continue
-#   annotated_image = image.copy()
-#   for hand_landmarks in results.multi_hand_landmarks:
-#     print('hand_landmarks:', hand_landmarks)
-#     mp_drawing.draw_landmarks(
-#         annotated_image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-#   cv2.imwrite(
-#       '/tmp/annotated_image' + str(idx) + '.png', cv2.flip(image, 1))
-# hands.close()
-
-# For webcam input:
-
-
-
-# The landmarks array has the following structur: [x0, y0, x1, y1, ....., x20, y20]
-# with for example x0 and y0 the x and y values of the landmark at index 0.
-test_landmarks_data = [
-  0.499651,0.849638,0.614354,0.796254,
-  0.686660,0.692482, 0.743792,0.606666,
-  0.809362,0.512337,0.538779,0.499517,
-  0.513829,0.361394,0.484049,0.260214,
-  0.452508,0.173999, 0.445565,0.512067,
-  0.396448,0.358399,0.355494,0.245083,0.318670,
-  0.157915,0.355069,0.562040, 0.278774,
-  0.435983,0.221781,0.345394,0.178977,0.273430,
-  0.288238,0.631016,0.219506, 0.544787,
-  0.162939,0.483343,0.110222,0.422808] # true label: 5
 
 
 
@@ -149,15 +108,16 @@ def recognizeHandGesture(landmarks):
   if (landmarks.landmark[18].x < pseudoFixKeyPoint and landmarks.landmark[20].x < landmarks.landmark[19].x and landmarks.landmark[19].x < landmarks.landmark[18].x and landmarks.landmark[2].y < landmarks.landmark[18].y and landmarks.landmark[2].x > landmarks.landmark[6].x):
     littleFingerState = 'OPENLEFT'
 
-  if (thumbState == 'OPENUP' ):
+  ########################################__ACTION__############################################################
+
+  if (thumbState == 'OPENUP' and landmarks.landmark[8].x>landmarks.landmark[6].x ):
     recognizedHandGesture = "THUMBUP"
 
-  if (thumbState == 'OPENDOWN' ):
+  if (thumbState == 'OPENDOWN' and landmarks.landmark[8].x<landmarks.landmark[6].x ):
     recognizedHandGesture = "THUMBDOWN"
 
   if ( indexFingerState == 'OPENUP' and middleFingerState == 'OPENUP' and ringFingerState == 'OPENUP' and littleFingerState == 'OPENUP'):
     recognizedHandGesture = "UP" 
-    print("hello up")
 
   if ( indexFingerState == 'OPENDOWN' and middleFingerState == 'OPENDOWN' and ringFingerState == 'OPENDOWN' and littleFingerState == 'OPENDOWN'):
     recognizedHandGesture = "DOWN" 
@@ -177,28 +137,14 @@ def recognizeHandGesture(landmarks):
   if (middleFingerState == 'CLOSE' and indexFingerState == 'OPENUP' and ringFingerState == 'CLOSE' and littleFingerState == 'CLOSE' ):
     recognizedHandGesture ="INDEX"
   
-
-  print("Index : "+str(thumbState))
-  print ("Index : "+str(indexFingerState))
-  print ("Index : "+str(middleFingerState))
-  print ("Index : "+str(ringFingerState))
-  print ("Index : "+str(littleFingerState))
-
-
-  if (thumbState == 'OPEN' and indexFingerState == 'OPEN' and middleFingerState == 'OPEN' and ringFingerState == 'OPEN' and littleFingerState == 'OPEN'):
-    recognizedHandGesture = "FIVE"   
-  elif (thumbState == 'CLOSE' and indexFingerState == 'OPEN' and middleFingerState == 'OPEN' and ringFingerState == 'OPEN' and littleFingerState == 'OPEN'):
-    recognizedHandGesture = "FOUR"  
-  elif (thumbState == 'OPEN' and indexFingerState == 'OPEN' and middleFingerState == 'OPEN' and ringFingerState == 'CLOSE' and littleFingerState == 'CLOSE'):
-    recognizedHandGesture = "TREE"   
-  elif (thumbState == 'OPEN' and indexFingerState == 'OPEN' and middleFingerState == 'CLOSE' and ringFingerState == 'CLOSE' and littleFingerState == 'CLOSE'):
-    recognizedHandGesture = "TWO"   
-  elif (thumbState == 'CLOSE' and indexFingerState == 'CLOSE' and middleFingerState == 'CLOSE' and ringFingerState == 'CLOSE' and littleFingerState == 'CLOSE'):
+  if ( indexFingerState == 'CLOSE' and middleFingerState == 'CLOSE' and ringFingerState == 'CLOSE' and littleFingerState == 'CLOSE'):
     recognizedHandGesture = "FIST"
-  elif (thumbState == 'CLOSE' and indexFingerState == 'CLOSE' and middleFingerState == 'OPEN' and ringFingerState == 'CLOSE' and littleFingerState == 'CLOSE'):
-    recognizedHandGesture = "FUCK DEVO"
-  #else:
-    #recognizedHandGesture = "UNKNOW"
+
+  print("Thumb : "+str(thumbState))
+  print ("Index : "+str(indexFingerState))
+  print ("Middle : "+str(middleFingerState))
+  print ("Ring : "+str(ringFingerState))
+  print ("Little : "+str(littleFingerState))
 
   print(recognizedHandGesture)
   return recognizedHandGesture
