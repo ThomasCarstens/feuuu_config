@@ -66,7 +66,7 @@ class GestureDrone:
 
             # if msg.data == 'TWO': #start_forward
             #     self.cf.cmdVelocityWorld(np.array([self.velocity, 0, 0]), yawRate=0)
-            if msg.data == 'INDEX' :#start_up
+            if msg.data == 'INDEX' :#takeoff
                 self.cf.takeoff(targetHeight=self.takeoff_height, duration=3.0)
             
             if msg.data == 'SPIDERMAN' :#land
